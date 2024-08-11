@@ -18,4 +18,6 @@ class PlayArea extends RectangleComponent with HasGameReference<BrickBreaker> {
     super.onLoad();
     size = Vector2(game.width, game.height);
   }
+
+  
 }

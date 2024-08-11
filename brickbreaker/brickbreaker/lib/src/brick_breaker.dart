@@ -6,7 +6,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flame_audio/flame_audio.dart'; 
 import 'components/components.dart';
 import 'config.dart';
 
@@ -14,6 +14,7 @@ enum PlayState { welcome, playing, gameOver, won }              // Add this enum
 
 class BrickBreaker extends FlameGame
     with HasCollisionDetection, KeyboardEvents, TapDetector {   // Modify this line
+// Add this line
   BrickBreaker()
       : super(
           camera: CameraComponent.withFixedResolution(
@@ -50,11 +51,22 @@ class BrickBreaker extends FlameGame
 
     world.add(PlayArea());
 
-    playState = PlayState.welcome;                              // Add from here...
+
+  try {
+  await FlameAudio.audioCache.loadAll(['bgm.mp3']);
+  FlameAudio.bgm.play('bgm.mp3');
+} catch (e) {
+  print('Error: $e');
+}
+
+    playState = PlayState.welcome;                // Add from here...
   }
 
   void startGame() {
-    if (playState == PlayState.playing) return;
+    if (playState == PlayState.playing){
+      FlameAudio.bgm.stop();
+      return;
+      } 
 
     world.removeAll(world.children.query<Ball>());
     world.removeAll(world.children.query<Bat>());
@@ -83,7 +95,6 @@ class BrickBreaker extends FlameGame
               (i + 0.5) * brickWidth + (i + 1) * brickGutter,
               (j + 2.0) * brickHeight + j * brickGutter,
             ),
-            // color: brickColors[i]
           ),
     ]);
   }                                                             // Drop the debugMode
@@ -91,6 +102,7 @@ class BrickBreaker extends FlameGame
   @override                                                     // Add from here...
   void onTap() {
     super.onTap();
+    onPause();
     startGame();
   }                                                             // To here.
 
@@ -112,4 +124,8 @@ class BrickBreaker extends FlameGame
 
   @override
   Color backgroundColor() => const Color(0xfff2e8cf);          // Add this override
+
+   void onPause() {
+    FlameAudio.bgm.stop();
+  }
 }

@@ -11,7 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
-  google_fonts: ^6.1.0
+  path_provider: ^2.0.2
+  google_fonts: ^4.0.4
+  flame_audio: ^2.10.2
 
 dev_dependencies:
   flutter_test:
@@ -21,4 +23,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+  - assets/audio/
   - assets/images/
