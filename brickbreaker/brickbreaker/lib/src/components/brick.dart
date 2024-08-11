@@ -11,7 +11,7 @@ import 'bat.dart';
 class Brick extends PositionComponent with CollisionCallbacks, HasGameReference<BrickBreaker> {
   late Sprite _sprite;
   bool _isSpriteLoaded = false;
-  Brick({required super.position})
+  Brick({required super.position, required this.imagePath})
       : super(
           size: Vector2(brickWidth, brickHeight),
           anchor: Anchor.center,
@@ -20,8 +20,11 @@ class Brick extends PositionComponent with CollisionCallbacks, HasGameReference<
     _loadImage();
   }
 
+  final String imagePath;
+  int _index = -1;
+
   Future<void> _loadImage() async {
-    final image = await Flame.images.load('cats.jpg');
+    final image = await Flame.images.load(imagePath);
     _sprite = Sprite(image);
     _isSpriteLoaded = true;
   }
@@ -30,11 +33,14 @@ class Brick extends PositionComponent with CollisionCallbacks, HasGameReference<
   void render(Canvas canvas) {
     super.render(canvas);
     if (_isSpriteLoaded) {
-      _sprite.render(canvas, position: Vector2((position.x*0.01)+30, position.y*0.01), size: Vector2(brickWidth, brickHeight), anchor: Anchor.center);
+      _sprite.render(
+        canvas,
+        position: Vector2((position.x * 0.01) + 30, position.y * 0.01),
+        size: Vector2(brickWidth, brickHeight),
+        anchor: Anchor.center,
+      );
     }
   }
-
-
 
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
@@ -42,11 +48,10 @@ class Brick extends PositionComponent with CollisionCallbacks, HasGameReference<
     removeFromParent();
 
     if (game.world.children.query<Brick>().isEmpty) {
-      game.playState = PlayState.won;                          
+      game.playState = PlayState.won;
       game.world.removeAll(game.world.children.query<Ball>());
       game.world.removeAll(game.world.children.query<Bat>());
     }
   }
 }
-
 
