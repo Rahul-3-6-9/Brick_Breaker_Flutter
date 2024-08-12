@@ -21,7 +21,6 @@ class Brick extends PositionComponent with CollisionCallbacks, HasGameReference<
   }
 
   final String imagePath;
-  int _index = -1;
 
   Future<void> _loadImage() async {
     final image = await Flame.images.load(imagePath);

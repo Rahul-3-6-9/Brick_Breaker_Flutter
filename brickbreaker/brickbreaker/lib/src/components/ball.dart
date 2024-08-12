@@ -72,20 +72,12 @@ class Ball extends CircleComponent
   }
 
   void bat_collision() async{
-    try {
   await FlameAudio.audioCache.load('Paddle Sound.mp3');
   FlameAudio.play('Paddle Sound.mp3');
-} catch (e) {
-  print('Error: $e');
-}
   }
 
   void brick_collision() async{
-    try {
   await FlameAudio.audioCache.load('Paddle Sound.mp3');
   FlameAudio.play('Brick.mp3');
-} catch (e) {
-  print('Error: $e');
-}
   }
 }

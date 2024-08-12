@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';                         // Add this import
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 import '../brick_breaker.dart';
 
 class PlayArea extends RectangleComponent with HasGameReference<BrickBreaker> {
+    late Sprite _sprite;
+  bool _isSpriteLoaded = false;
   PlayArea()
       : super(
-          paint: Paint()..color = const Color(0xfff2e8cf),
           children: [RectangleHitbox()],                        // Add this parameter
         );
 
@@ -17,7 +19,26 @@ class PlayArea extends RectangleComponent with HasGameReference<BrickBreaker> {
   FutureOr<void> onLoad() async {
     super.onLoad();
     size = Vector2(game.width, game.height);
+    _loadImage();
   }
 
+  Future<void> _loadImage() async {
+    final image = await Flame.images.load('BackGround.jpeg');
+    _sprite = Sprite(image);
+    _isSpriteLoaded = true;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    if (_isSpriteLoaded) {
+      _sprite.render(
+        canvas,
+        size: Vector2(game.width, game.height),
+        position: Vector2(game.width/2, game.height/2),
+        anchor: Anchor.center,
+      );
+    }
+  }
   
 }
