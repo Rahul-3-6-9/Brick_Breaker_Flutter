@@ -10,6 +10,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'components/components.dart';
 import 'config.dart';
 
+
 enum PlayState { welcome, playing, gameOver, won }
 
 class BrickBreaker extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDetector {
@@ -27,6 +28,7 @@ class BrickBreaker extends FlameGame with HasCollisionDetection, KeyboardEvents,
   final rand = math.Random();
   double get width => size.x;
   double get height => size.y;
+
 
   late PlayState _playState;
 PlayState get playState => _playState;
@@ -58,18 +60,20 @@ set playState(PlayState value) {
     playState = PlayState.welcome;
   }
 
-  void startGame() {
+  void startGame() async{
     if (playState == PlayState.playing) {
       FlameAudio.bgm.stop();
       return;
     }
 
+
     world.removeAll(world.children.query<Ball>());
     world.removeAll(world.children.query<Bat>());
     world.removeAll(world.children.query<Brick>());
+    world.removeAll(world.children.query<PlayArea>());
 
     playState = PlayState.playing;
-
+    world.add(PlayArea());
     world.add(Ball(
         difficultyModifier: difficultyModifier,
         radius: ballRadius,
@@ -81,31 +85,46 @@ set playState(PlayState value) {
     world.add(Bat(
         size: Vector2(batWidth, batHeight),
         cornerRadius: const Radius.circular(ballRadius / 2),
-        position: Vector2(width / 2, height * 0.95)));
+        position: Vector2(width / 2, height*0.9)));
 
     final brickImages = [];
 
-    for (int i = 0; i < 50; i++){
+    for (int i = 0; i < 500; i++){
       brickImages.add('piece_$i.jpg');
     }
 
 
-    for (var i = 0; i < brickColors.length; i++){
-        for (var j = 1; j <= 5; j++){
-          final brick = Brick(
-        position: Vector2(
+  //   for (var i = 0; i < 25; i++){
+  //       for (var j = 1; j <= 20; j++){
+  //         final brick = Brick(
+  //       position: Vector2(
+  //             ((i-0.25) * brickWidth + (i*0.0000000000001) * brickGutter),
+  //             ((j+1.0) * brickHeight + (j*0.0000000000001) * brickGutter),
+  //           ),
+  //       imagePath: brickImages[((j-1)*25)+i],
+  //     );
+  //     world.add(brick);
+  //       }
+  //   }
+  // }
+
+  await world.addAll([                                        // Add from here...
+      for (var i = 0; i < brickColors.length; i++)
+        for (var j = 1; j <= 5; j++)
+          Brick(
+            position: Vector2(
               (i + 0.5) * brickWidth + (i + 1) * brickGutter,
               (j + 2.0) * brickHeight + j * brickGutter,
             ),
-        imagePath: brickImages[((j-1)*10)+i],
-      );
-      world.add(brick);
-        }
-    }
+            color: const Color.fromARGB(255, 255, 255, 255),
+          ),
+    ]);
+
   }
 
   @override
   void onTap() {
+    gameStarted=true;
     super.onTap();
     onPause();
     startGame();
@@ -133,4 +152,6 @@ set playState(PlayState value) {
   void onPause() {
     FlameAudio.bgm.stop();
   }
+
+  
 }

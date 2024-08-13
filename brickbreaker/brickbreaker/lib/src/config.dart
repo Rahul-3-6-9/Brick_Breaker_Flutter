@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';                         // Add this impo
 
 const brickColors = [                                           // Add this const
   Color(0xfff94144),
-  Color(0xfff3722c),
+  Color.fromARGB(255, 0, 0, 0),
   Color(0xfff8961e),
   Color(0xfff9844a),
   Color(0xfff9c74f),
@@ -24,4 +24,5 @@ final brickWidth =
     (gameWidth - (brickGutter * (brickColors.length + 1)))
     / brickColors.length;
 const brickHeight = gameHeight * 0.03;
-const difficultyModifier = 1.03;                                // To here.
+const difficultyModifier = 1.05;
+bool gameStarted = false;                              // To here.

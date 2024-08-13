@@ -15,25 +15,23 @@ class GameApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         textTheme: GoogleFonts.pressStart2pTextTheme().apply(
-          bodyColor: const Color(0xff184e77),
-          displayColor: const Color(0xff184e77),
+          bodyColor: const Color.fromARGB(255, 255, 255, 255),
+          displayColor: const Color.fromARGB(255, 255, 255, 255),
         ),
       ),
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+            gradient: RadialGradient(
               colors: [
-                Color(0xffa9d6e5),
-                Color(0xfff2e8cf),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 0, 0, 0),
               ],
             ),
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(0),
               child: Center(
                 child: FittedBox(
                   child: SizedBox(

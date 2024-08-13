@@ -20,7 +20,7 @@ class Ball extends CircleComponent
             radius: radius,
             anchor: Anchor.center,
             paint: Paint()
-              ..color = const Color(0xff1e6091)
+              ..color = const Color.fromARGB(255, 255, 255, 255)
               ..style = PaintingStyle.fill,
             children: [CircleHitbox()]);
 
@@ -77,7 +77,7 @@ class Ball extends CircleComponent
   }
 
   void brick_collision() async{
-  await FlameAudio.audioCache.load('Paddle Sound.mp3');
+  await FlameAudio.audioCache.load('Brick.mp3');
   FlameAudio.play('Brick.mp3');
   }
 }
