@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';                         // Add this import
 
 const brickColors = [                                           // Add this const
@@ -26,3 +27,5 @@ final brickWidth =
 const brickHeight = gameHeight * 0.03;
 const difficultyModifier = 1.05;
 bool gameStarted = false;                              // To here.
+Vector2 ballPosition = Vector2(0, 0);
+final countdown = Timer(60);

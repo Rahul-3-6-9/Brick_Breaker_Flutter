@@ -1,3 +1,4 @@
+import 'package:brickbreaker/src/config.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -31,6 +32,7 @@ class Ball extends CircleComponent
   void update(double dt) {
     super.update(dt);
     position += velocity * dt;
+    ballPosition = position;
   }
 
   @override
@@ -47,8 +49,10 @@ class Ball extends CircleComponent
       } else if (intersectionPoints.first.y >= game.height) {
         add(RemoveEffect(
             delay: 0.35,
-            onComplete: () {                                    // Modify from here
+            onComplete: () {    
+              countdown.reset();                                // Modify from here
               game.playState = PlayState.gameOver;
+              
             }));                                                // To here.
       }
     } else if (other is Bat) {

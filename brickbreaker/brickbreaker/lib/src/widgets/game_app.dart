@@ -47,6 +47,7 @@ class GameApp extends StatelessWidget {
                                     Theme.of(context).textTheme.headlineLarge,
                               ),
                             ),
+                        
                         PlayState.gameOver.name: (context, game) => Center(
                               child: Text(
                                 'G A M E   O V E R',

@@ -48,6 +48,7 @@ class PlayArea extends RectangleComponent with HasGameReference<BrickBreaker> {
         anchor: Anchor.center,
       );
     }
+    
   }
   
 }

@@ -9,12 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'components/components.dart';
 import 'config.dart';
+import 'package:flame/effects.dart';
+import 'components/ball.dart';
 
 
 enum PlayState { welcome, playing, gameOver, won }
 
 class BrickBreaker extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDetector {
-  late Timer countdown;
+  //late Timer countdown;
   bool timeStarted = false;
 
   BrickBreaker()
@@ -64,9 +66,10 @@ set playState(PlayState value) {
     if (playState == PlayState.playing) {
       FlameAudio.bgm.stop();
       return;
+
     }
-
-
+    
+    timeStarted = true;
     world.removeAll(world.children.query<Ball>());
     world.removeAll(world.children.query<Bat>());
     world.removeAll(world.children.query<Brick>());
@@ -121,6 +124,44 @@ set playState(PlayState value) {
     ]);
 
   }
+final TextPaint textPaint = TextPaint(
+    style: const TextStyle(color: Colors.white, fontSize: 40),);
+
+@override
+void render(Canvas canvas) {
+  super.render(canvas);
+  if (playState == PlayState.playing) {
+    textPaint.render(
+      canvas,
+      "Time Remaining: ${(60-countdown.current.toInt()).toString()}",
+      Vector2(10, 50),
+    );
+  }
+}
+
+ 
+
+@override
+void update(double dt) {
+  super.update(dt);
+  if (!timeStarted) {
+    countdown.start();
+
+  }
+  countdown.update(dt);
+
+  if (countdown.finished) {
+    add(RemoveEffect(
+            delay: 0.35,
+            onComplete: () {                                    // Modify from here
+              playState = PlayState.gameOver;
+              timeStarted = false;
+              //Ball(velocity: Vector2(0, 0), position: ballPosition, radius: ballRadius, difficultyModifier: difficultyModifier);
+              world.removeAll(world.children.query<Ball>());
+            })); 
+  }
+}
+
 
   @override
   void onTap() {
@@ -128,7 +169,9 @@ set playState(PlayState value) {
     super.onTap();
     onPause();
     startGame();
+    
   }
+  
 
   @override
   KeyEventResult onKeyEvent(
