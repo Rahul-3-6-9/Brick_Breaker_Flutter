@@ -18,6 +18,7 @@ enum PlayState { welcome, playing, gameOver, won }
 class BrickBreaker extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDetector {
   //late Timer countdown;
   bool timeStarted = false;
+  
 
   BrickBreaker()
       : super(
@@ -81,20 +82,21 @@ set playState(PlayState value) {
         difficultyModifier: difficultyModifier,
         radius: ballRadius,
         position: size / 2,
-        velocity: Vector2((rand.nextDouble() - 0.5) * width, height * 0.2)
-            .normalized()
+        velocity: ((Vector2((rand.nextDouble() - 0.5), (1)))*2.0)
           ..scale(height / 4)));
+    
+
 
     world.add(Bat(
         size: Vector2(batWidth, batHeight),
         cornerRadius: const Radius.circular(ballRadius / 2),
         position: Vector2(width / 2, height*0.9)));
 
-    final brickImages = [];
+    // final brickImages = [];
 
-    for (int i = 0; i < 500; i++){
-      brickImages.add('piece_$i.jpg');
-    }
+    // for (int i = 0; i < 500; i++){
+    //   brickImages.add('piece_$i.jpg');
+    // }
 
 
   //   for (var i = 0; i < 25; i++){
@@ -112,12 +114,12 @@ set playState(PlayState value) {
   // }
 
   await world.addAll([                                        // Add from here...
-      for (var i = 0; i < brickColors.length; i++)
-        for (var j = 1; j <= 5; j++)
+      for (var i = 0; i < 20; i++)
+        for (var j = 1; j <= 15; j++)
           Brick(
             position: Vector2(
               (i + 0.5) * brickWidth + (i + 1) * brickGutter,
-              (j + 2.0) * brickHeight + j * brickGutter,
+              (j + 4.0) * brickHeight + j * brickGutter,
             ),
             color: const Color.fromARGB(255, 255, 255, 255),
           ),

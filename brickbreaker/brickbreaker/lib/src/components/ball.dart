@@ -1,4 +1,6 @@
+
 import 'package:brickbreaker/src/config.dart';
+import 'dart:math' as math;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -10,9 +12,11 @@ import 'bat.dart';
 import 'brick.dart';
 import 'play_area.dart';
 
+
 class Ball extends CircleComponent
     with CollisionCallbacks, HasGameReference<BrickBreaker> {
   Ball({
+    
     required this.velocity,
     required super.position,
     required double radius,
@@ -28,12 +32,18 @@ class Ball extends CircleComponent
   final Vector2 velocity;
   final double difficultyModifier;
 
-  @override
-  void update(double dt) {
+  final double _fixedTimestep = 1 / 144;
+
+
+@override
+void update(double dt) {
+  if (dt >= _fixedTimestep) {
     super.update(dt);
     position += velocity * dt;
-    ballPosition = position;
+    ballPosition = position;// Update game logic here
+    dt = 0;
   }
+}
 
   @override
   void onCollisionStart(
@@ -44,6 +54,7 @@ class Ball extends CircleComponent
         velocity.y = -velocity.y;
       } else if (intersectionPoints.first.x <= 0) {
         velocity.x = -velocity.x;
+
       } else if (intersectionPoints.first.x >= game.width) {
         velocity.x = -velocity.x;
       } else if (intersectionPoints.first.y >= game.height) {
@@ -84,4 +95,5 @@ class Ball extends CircleComponent
   await FlameAudio.audioCache.load('Brick.mp3');
   FlameAudio.play('Brick.mp3');
   }
+  
 }
