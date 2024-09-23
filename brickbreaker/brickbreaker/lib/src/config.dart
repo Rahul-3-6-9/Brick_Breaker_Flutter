@@ -1,7 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';  
-import 'package:flame/game.dart';
-import 'dart:async';
 import 'dart:math' as math;                       // Add this import
 
 const brickColors = [                                           // Add this const
@@ -20,7 +18,7 @@ final rand = math.Random();
 const gameWidth = 820.0;
 const gameHeight = 1600.0;
 const ballRadius = gameWidth * 0.02;
-const batWidth = gameWidth * 0.2;
+const batWidth = gameWidth * 0.3;
 const batHeight = ballRadius * 2;
 const batStep = gameWidth * 0.05;
 const brickGutter = gameWidth * 0.015;                          // Add from here...
@@ -28,8 +26,9 @@ const brickWidth =
     (gameWidth - (brickGutter * (20 + 1)))
     / 20;
 const brickHeight =(gameHeight * 0.03)/2;
-const difficultyModifier = 1.0;
+const difficultyModifier = 1.02;
 bool gameStarted = false;                              // To here.
 Vector2 ballPosition = Vector2(0, 0);
 final countdown = Timer(60);
-
+int i = 1;
+double sign = 0;

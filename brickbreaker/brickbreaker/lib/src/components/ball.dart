@@ -1,6 +1,4 @@
-
 import 'package:brickbreaker/src/config.dart';
-import 'dart:math' as math;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -42,6 +40,30 @@ void update(double dt) {
     position += velocity * dt;
     ballPosition = position;// Update game logic here
     dt = 0;
+    if (ballPosition.y <= (1 + 4.0) * brickHeight - 1 * brickGutter-15) {
+        velocity.y = -velocity.y;
+        ballPosition.y = (1 + 4.0) * brickHeight - 1 * brickGutter+15;
+      } else if (ballPosition.x <= 0) {
+        velocity.x = -velocity.x;
+        ballPosition.x = 17;
+
+      } else if (ballPosition.x >= game.width) {
+        velocity.x = -velocity.x;
+        ballPosition.x = game.width-17;
+      } else if (ballPosition.y >= game.height) {
+        add(RemoveEffect(
+            delay: 0.35,
+            onComplete: () {    
+              countdown.reset();   
+              i=0;                             // Modify from here
+              game.playState = PlayState.gameOver;
+              
+              
+            }));                                                // To here.
+      }
+      
+
+
   }
 }
 
@@ -50,18 +72,22 @@ void update(double dt) {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is PlayArea) {
-      if (intersectionPoints.first.y <= 0) {
+      if (intersectionPoints.first.y <= (1 + 4.0) * brickHeight -1 * brickGutter-15) {
         velocity.y = -velocity.y;
+        ballPosition.y = (1 + 4.0) * brickHeight  -1 * brickGutter+15;
       } else if (intersectionPoints.first.x <= 0) {
         velocity.x = -velocity.x;
+        ballPosition.x = 17;
 
       } else if (intersectionPoints.first.x >= game.width) {
         velocity.x = -velocity.x;
+        ballPosition.x = game.width-17;
       } else if (intersectionPoints.first.y >= game.height) {
         add(RemoveEffect(
             delay: 0.35,
             onComplete: () {    
-              countdown.reset();                                // Modify from here
+              countdown.reset();       
+              i=0;                         // Modify from here
               game.playState = PlayState.gameOver;
               
             }));                                                // To here.
@@ -81,19 +107,24 @@ void update(double dt) {
         velocity.x = -velocity.x;
       } else if (position.x > other.position.x) {
         velocity.x = -velocity.x;
+      } else{}
+
+
+      if (i<25){
+        velocity.setFrom(velocity*difficultyModifier);
+        i=i+1;
       }
-      velocity.setFrom(velocity * difficultyModifier);
     }
   }
 
   void bat_collision() async{
-  await FlameAudio.audioCache.load('Paddle Sound.mp3');
-  FlameAudio.play('Paddle Sound.mp3');
+  await FlameAudio.audioCache.load('paddle1.mp3');
+  FlameAudio.play('paddle1.mp3');
   }
 
   void brick_collision() async{
-  await FlameAudio.audioCache.load('Brick.mp3');
-  FlameAudio.play('Brick.mp3');
+  await FlameAudio.audioCache.load('Brick1.wav');
+  FlameAudio.play('Brick1.wav');
   }
   
 }
